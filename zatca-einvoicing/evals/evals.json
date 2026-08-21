@@ -1,0 +1,26 @@
+{
+  "skill_name": "zatca-einvoicing",
+  "evals": [
+    {
+      "id": 1,
+      "name": "freelancer-under-threshold",
+      "prompt": "أنا فريلانسر مصمم مواقع، سجلت رخصة عمل حر من وزارة الموارد البشرية. دخلي السنوي حوالي 220 ألف ريال. أبي أضيف نظام فوترة بسيط لموقعي عشان أصدر فواتير لعملائي المحليين. هل لازم أطبق فوترة إلكترونية متوافقة مع زاتكا؟ وإذا لا، وش الأفضل أسويه من ناحية تصميم النظام؟",
+      "expected_output": "Should correctly identify the SAR 187,500–375,000 band as voluntary VAT registration territory, explain that e-invoicing obligation is tied to VAT registration (not freelancer status), state the freelancer is NOT currently mandated (since 220k < 375k) unless voluntarily registered, and give practical design advice (capture VAT registration status per user/build so compliance can be added later without a rewrite) rather than jumping straight into full Phase 1/Phase 2 implementation.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "saas-phase2-integration",
+      "prompt": "نبني SaaS للفوترة تستخدمه شركات سعودية مسجلة في ضريبة القيمة المضافة بإيرادات فوق 5 مليون ريال سنويًا. نبي نطبق فاتورة ضريبية (B2B) متوافقة مع المرحلة الثانية من زاتكا. وش المطلوب تقنيًا عشان نطلع فاتورة معتمدة (cleared)؟",
+      "expected_output": "Should correctly explain this is a Tax Invoice (B2B) under Phase 2, describe the clearance flow (submit XML to ZATCA, wait for real-time approval + ZATCA-applied cryptographic stamp before sharing with buyer), mention CSID onboarding via FATOORA portal as a prerequisite, XML/UBL 2.1 format requirement, hash chain (Previous Invoice Hash) and UUID fields, and should NOT conflate this with the Simplified Tax Invoice reporting flow (self-stamped, 24h reporting) since this is B2B/Tax Invoice specifically.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "name": "pos-qr-code",
+      "prompt": "عندي نظام كاشير (POS) لمطعم في الرياض، مسجل بضريبة القيمة المضافة من زمان. أبي أضيف QR code على الفاتورة المبسطة اللي تطبع للزبون، متوافق مع فوترة زاتكا. كيف أبني الـ QR الصح تقنيًا؟",
+      "expected_output": "Should identify this as a Simplified Tax Invoice (B2C, restaurant POS), explain the Base64 TLV encoding requirement, correctly describe the 5-tag structure (seller name, VAT number, timestamp, total, VAT amount) and mention the script bundled with the skill (zatca_qr_tlv.py) rather than hand-rolling TLV encoding, and should flag that if this restaurant is also in a Phase 2 wave, the QR needs to grow to 9 tags with the cryptographic stamp/hash/public key fields sourced from their CSID.",
+      "files": []
+    }
+  ]
+}
